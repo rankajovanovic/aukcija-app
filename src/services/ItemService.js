@@ -15,6 +15,13 @@ class ItemService {
             console.log(error)
         })
    }
+
+   async getOne(id) {
+       console.log(id);
+    const  {data}  = await http.get(`items/${id}`);
+    console.log(data);
+    return data;
+  }
   
 }
 const itemService = new ItemService();

@@ -1,17 +1,28 @@
 <template>
 	<div class="d-flex justify-content-center mt-5 pt-5">
 		<form @submit.prevent="register">
+			<h1>Register</h1>
 			<!-- 2 column grid layout with text inputs for the first and last names -->
 			<div class="row mb-4">
 				<div class="col">
 					<div class="form-outline">
-						<input v-model= "credentials.first_name" type="text" id="first_name" class="form-control" />
+						<input
+							v-model="credentials.first_name"
+							type="text"
+							id="first_name"
+							class="form-control"
+						/>
 						<label class="form-label" for="first_name">First name</label>
 					</div>
 				</div>
 				<div class="col">
 					<div class="form-outline">
-						<input v-model= "credentials.last_name" type="text" id="last_name" class="form-control" />
+						<input
+							v-model="credentials.last_name"
+							type="text"
+							id="last_name"
+							class="form-control"
+						/>
 						<label class="form-label" for="last_name">Last name</label>
 					</div>
 				</div>
@@ -19,19 +30,36 @@
 
 			<!-- Email input -->
 			<div class="form-outline mb-4">
-				<input v-model = "credentials.email" type="email" id="email" class="form-control" />
+				<input
+					v-model="credentials.email"
+					type="email"
+					id="email"
+					class="form-control"
+				/>
 				<label class="form-label" for="email">Email address</label>
 			</div>
 
 			<!-- Password input -->
 			<div class="form-outline mb-4">
-				<input v-model = "credentials.password" type="password" id="password" class="form-control" />
+				<input
+					v-model="credentials.password"
+					type="password"
+					id="password"
+					class="form-control"
+				/>
 				<label class="form-label" for="password">Password</label>
 			</div>
 
-      <div class="form-outline mb-4">
-				<input v-model = "credentials.password_confirmation" type="password" id="password_confirmation" class="form-control" />
-				<label class="form-label" for="password_confirmation">Confirm Password</label>
+			<div class="form-outline mb-4">
+				<input
+					v-model="credentials.password_confirmation"
+					type="password"
+					id="password_confirmation"
+					class="form-control"
+				/>
+				<label class="form-label" for="password_confirmation"
+					>Confirm Password</label
+				>
 			</div>
 
 			<!-- Submit button -->
@@ -59,7 +87,7 @@ export default {
 		async register() {
 			try {
 				await this.$store.dispatch("register", this.credentials);
-				alert("user registrovan");
+				this.$router.push("/");
 			} catch (error) {
 				console.log(error);
 			}
@@ -67,3 +95,4 @@ export default {
 	},
 };
 </script>
+

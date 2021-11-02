@@ -3,11 +3,10 @@ import itemService from '../services/ItemService.js'
 import { store } from '.';
 
 export const actions = {
-  
+
   async login(store, credentials) {
-    console.log('login action', { credentials})
-    const { user, token, ...data } = await authService.login(credentials);
-    console.log('login action, got response', { user, token , data})
+    const { user, token } = await authService.login(credentials);
+    console.log(user);
     localStorage.setItem('token', JSON.stringify(token));
 
     store.commit('setActiveUser', user);
@@ -29,12 +28,17 @@ export const actions = {
     localStorage.removeItem('token');
   },
   async register(store, credentials) {
-    await authService.register(credentials);
-  },
-  async getItems() {
-    const items = await itemService.getAll();
-    store.commit('setItems', items);
-    console.log(items);
+    const { user, token } = await authService.register(credentials);
     
+    localStorage.setItem('token', JSON.stringify(token))
+        store.commit('setActiveUser', user)
+        store.commit('setToken', token)
+  },
+  async getItems(state, payload) {
+    const response = await itemService.getAll(payload);
+    store.commit('setItems', response.data);
+  },
+  addItem(store, item) {
+    itemService.add(item);
   }
 };

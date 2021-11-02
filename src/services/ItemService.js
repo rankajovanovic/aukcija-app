@@ -1,9 +1,13 @@
 import http from './BaseService';
 
 class ItemService {
-    async getAll(){
-        const response = await http.get('items')
-        return response.data
+
+    getAll(payload){
+        return http.get('items', {
+            headers: {
+                searchText: payload.searchText,
+              },
+            });
     }
 
    add(data) {
@@ -17,9 +21,8 @@ class ItemService {
    }
 
    async getOne(id) {
-       console.log(id);
     const  {data}  = await http.get(`items/${id}`);
-    console.log(data);
+  
     return data;
   }
   

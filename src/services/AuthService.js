@@ -19,12 +19,11 @@ class AuthService {
       }
     
       async register(credentials) {
-        console.log(credentials);
         try {
           const {data} = await http.post('/register', credentials);
           if (data.token) {
             const token = data.token;
-            localStorage.setItem('token', token);
+           // localStorage.setItem('token', token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           }
           console.log(data);

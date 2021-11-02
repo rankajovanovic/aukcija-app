@@ -1,4 +1,5 @@
 export const getters = {
   isAuthenticated: (state) => !!state.token,
-  items: (state) => state.items
+  activeUser: (state) => state.activeUser,
+  items: (state) => state.items,
 };

@@ -3,6 +3,8 @@
 		<div class="container">
 			<!--Section: Products v.3-->
 			<section class="text-center mb-4">
+				<item-search @handleSearchText="setSearchText"></item-search>
+
 				<!--Grid row-->
 				<div class="row fadeIn">
 					<!--Grid column-->
@@ -17,7 +19,7 @@
 
 							<div class="view overlay">
 								<img
-                :src=" 'http://localhost:8000/storage/images/' + item.image"
+									:src="'http://localhost:8000/storage/images/' + item.image"
 									class="card-img-top"
 									alt=""
 								/>
@@ -29,7 +31,7 @@
 								<!--Category & Title-->
 
 								<strong>
-								<h5 class="dark-grey-text">
+									<h5 class="dark-grey-text">
 										<router-link
 											:to="{ name: 'single-item', params: { id: item.id } }"
 										>
@@ -39,8 +41,8 @@
 								</strong>
 
 								<h6>
-									<p class="grey-text"
-										>{{ item.description }}
+									<p class="grey-text">
+										{{ item.description }}
 										<span class="badge badge-pill danger-color">NEW</span>
 									</p>
 								</h6>
@@ -61,58 +63,47 @@
 					<!--Grid column-->
 				</div>
 			</section>
-			<!-- <nav class="d-flex justify-content-center wow fadeIn">
-        <ul class="pagination pg-blue">
-
-          <li class="page-item disabled">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-              <span class="sr-only">Previous</span>
-            </a>
-          </li>
-
-          <li class="page-item active">
-            <a class="page-link" href="#">1
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">2</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">3</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">4</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">5</a>
-          </li>
-
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-        </ul>
-      </nav> -->
 		</div>
 	</main>
 </template>
 
 <script>
+import itemSearch from "../components/itemSearch.vue";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
+	components: {
+		itemSearch,
+	},
 	data() {
 		return {
-			items: [],
+			searchText: "",
 		};
 	},
-
-	beforeRouteEnter(to, from, next) {
-		next((vm) => {
-			vm.$store.dispatch("getItems");
-		});
+	computed: {
+		...mapGetters(["items"]),
 	},
+	methods: {
+		...mapActions(["getItems"]),
+
+		setSearchText(search) {
+			this.searchText = search;
+			this.getItems({
+				pagination: this.currentSize,
+				searchText: this.searchText,
+			});
+		},
+	},
+beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getItems({'searchText': "" });
+    });
+  },
 };
 </script>
+
+<style>
+.form-outline .form-control {
+	border: solid 1px gray !important;
+}
+</style>

@@ -37,33 +37,31 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'Login',
-    data() {
-    return {
-      credentials: {
-      email: "",
-      password: ""
-      }
-    }
-    
-  },
- computed: {
-    ...mapGetters(['activeUser'])
-  },
-  methods: {
-      async login() {
-        try {
-          console.log('component >>> login, calling action', this.credentials)
-          await this.$store.dispatch('login', this.credentials)
-          alert('user logovan')
-        } catch(error) {
-          console.log(error);
-          alert('Invalid credentials')
-        }
-      },
-  }
-}
+	name: "Login",
+	data() {
+		return {
+			credentials: {
+				email: "",
+				password: "",
+			},
+		};
+	},
+	computed: {
+		...mapGetters(["activeUser"]),
+	},
+	methods: {
+		async login() {
+			try {
+				await this.$store.dispatch("login", this.credentials);
+				this.$router.push("/");
+			} catch (error) {
+				console.log(error);
+				alert("Invalid credentials");
+			}
+		},
+	},
+};
 </script>

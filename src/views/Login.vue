@@ -1,6 +1,6 @@
 <template>
 	<div class="d-flex justify-content-center mt-5 pt-5">
-		<form @submit.prevent="login">
+		<form @submit.prevent="handleLogin">
 			<!-- Email input -->
 			<div class="form-outline mb-4">
 				<input
@@ -8,8 +8,11 @@
 					type="email"
 					id="email"
 					class="form-control"
+					:class="validation || 'is-invalid'"
 				/>
-				<label class="form-label" for="email">Email address</label>
+				<label class="form-label" for="email" v-if="!credentials.email"
+					>Email address</label
+				>
 			</div>
 
 			<!-- Password input -->
@@ -19,8 +22,13 @@
 					type="password"
 					id="password"
 					class="form-control"
+					autocomplete="off"
+					:class="validation || 'is-invalid'"
 				/>
-				<label class="form-label" for="password">Password</label>
+				<label class="form-label" for="password" v-if="!credentials.password"
+					>Password</label
+				>
+				<div class="invalid-feedback">Wrong email or password</div>
 			</div>
 
 			<!-- Submit button -->
@@ -30,14 +38,14 @@
 
 			<!-- Register buttons -->
 			<div class="text-center">
-				<p>Not a member? <a href="#!">Register</a></p>
+				<p>Not a member?<router-link to="/register"> Register </router-link></p>
 			</div>
 		</form>
 	</div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
 	name: "Login",
@@ -47,19 +55,21 @@ export default {
 				email: "",
 				password: "",
 			},
+			validation: true,
 		};
 	},
 	computed: {
 		...mapGetters(["activeUser"]),
 	},
 	methods: {
-		async login() {
+		...mapActions(["login"]),
+		async handleLogin() {
 			try {
-				await this.$store.dispatch("login", this.credentials);
+				this.validation = true;
+				await this.login(this.credentials);
 				this.$router.push("/");
 			} catch (error) {
-				console.log(error);
-				alert("Invalid credentials");
+				this.validation = false;
 			}
 		},
 	},

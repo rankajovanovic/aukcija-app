@@ -13,7 +13,7 @@
 							class="form-control"
 						/>
 						<label class="form-label" for="name">Item name</label>
-					</div>
+				</div>
 				</div>
 				<div class="col">
 					<div class="form-outline">
@@ -62,12 +62,9 @@
 				<label class="form-label" for="description">Item description</label>
 			</div>
 
-			<div
-				class="form-outline mb-4 file-upload-wrapper"
-				style="margin-left: -100px"
-			>
-				<label class="form-label" for="input-file-now">Add image: </label>
-				<input type="file" id="input-file-now" class="file-upload" />
+			<div class="form-outline mb-4">
+				<input class="form-control" id="url" type="text" v-model="itemData.image" />				
+				<label class="form-label" for="url">Image url</label>
 			</div>
 
 			<!-- Submit button -->
@@ -88,8 +85,7 @@ export default {
 				description: "",
 				payment: "",
 				delivery: "",
-		//	user_id: this.$store.state.activeUser,
-				user_id: "3",
+				user_id: this.$store.state.activeUser.__ob__.dep.id,
 				image: "",
 			},
 			errors: [],
@@ -105,6 +101,51 @@ export default {
 				this.errors = error;
 			}
 		},
+		/*
+      Adds url to our images if
+      the integrity check passes
+    */
+		handleFromUrl(url = null) {
+			this.verifyUrlIntegrity(url || this.url)
+				.then(() => {
+					this.itemData.image = this.url;
+					console.log(this.itemData.image);
+					this.url = null;
+				})
+				.catch((e) => {
+					this.url = null;
+					alert("Could not load image." + e);
+				});
+		},
+		/*
+      Loads the url into an Image object
+      to do lite integrity check
+    */
+		verifyUrlIntegrity(url) {
+			// src @jfriend00
+			// https://stackoverflow.com/questions/9714525/javascript-image-url-verify
+			return new Promise(function (resolve, reject) {
+				const timeout = 5000;
+				let timer,
+					img = new Image();
+				img.onerror = img.onabort = function (e) {
+					clearTimeout(timer);
+					reject(e);
+				};
+				img.onload = function () {
+					clearTimeout(timer);
+					resolve("success");
+				};
+				timer = setTimeout(function () {
+					// reset .src to invalid URL so it stops previous
+					// loading, but doesn't trigger new load
+					img.src = null;
+					reject("timeout");
+				}, timeout);
+				img.src = url;
+			});
+		},
+
 	},
 	created() {
 		console.log(this.$store.state.activeUser);
@@ -113,4 +154,5 @@ export default {
 </script>
 
 <style>
+
 </style>

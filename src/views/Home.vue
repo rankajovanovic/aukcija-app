@@ -18,11 +18,7 @@
 							<!--Card image-->
 
 							<div class="view overlay">
-								<img
-									:src="'http://localhost:8000/storage/images/' + item.image"
-									class="card-img-top"
-									alt=""
-								/>
+								<img :src="item.image" class="card-img-top" alt="" />
 							</div>
 							<!--Card image-->
 
@@ -62,6 +58,14 @@
 
 					<!--Grid column-->
 				</div>
+				<button
+					class="btn btn-outline-primary"
+					style="margin-bottom: 50px, width: 150px"
+					v-if="currentSize <= numberOfItems"
+					@click="loadMoreItems"
+				>
+					Load More
+				</button>
 			</section>
 		</div>
 	</main>
@@ -78,13 +82,22 @@ export default {
 	data() {
 		return {
 			searchText: "",
+			currentSize: 8,
 		};
 	},
 	computed: {
-		...mapGetters(["items"]),
+		...mapGetters(["items", "numberOfItems"]),
 	},
 	methods: {
 		...mapActions(["getItems"]),
+
+		loadMoreItems() {
+			this.currentSize += 8;
+			this.getItems({
+				pagination: this.currentSize,
+				searchText: this.searchText,
+			});
+		},
 
 		setSearchText(search) {
 			this.searchText = search;
@@ -94,11 +107,14 @@ export default {
 			});
 		},
 	},
-beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.getItems({'searchText': "" });
-    });
-  },
+	created() {
+		console.log(this.items);
+	},
+	beforeRouteEnter(to, from, next) {
+		next((vm) => {
+			vm.getItems({ pagination: 8, searchText: "" });
+		});
+	},
 };
 </script>
 

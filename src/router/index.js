@@ -5,6 +5,11 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import SingleItem from '../views/SingleItem.vue'
 import AddItem from '../views/AddItem.vue'
+import Profile from '../views/Profile.vue'
+import BuyHistory from '../views/BuyHistory.vue'
+import SoldItems from '../views/SoldItems.vue'
+import ActiveOffers from '../views/ActiveOffers.vue'
+
 import { globalAuthGuard } from '../guards/authGuard'
 
 
@@ -38,6 +43,30 @@ const routes = [
     path: '/add',
     name: 'add-item',
     component: AddItem,
+    meta: { authRequired: true }
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
+    meta: { authRequired: true }
+  },
+  {
+    path: '/buy-history',
+    name: 'buy-history',
+    component: BuyHistory,
+    meta: { authRequired: true }
+  },
+  {
+    path: '/sold-items',
+    name: 'sold-items',
+    component: SoldItems,
+    meta: { authRequired: true }
+  },
+  {
+    path: '/active-offers',
+    name: 'active-offers',
+    component: ActiveOffers,
     meta: { authRequired: true }
   },
 ]

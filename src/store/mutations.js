@@ -7,7 +7,12 @@ export const mutations = {
     state.token = token;
   },
   
-  setItems(state, items) {
-    state.items = items;
+  setItems(state, payload) {
+    state.items =  payload[0];
+    state.numberOfItems = payload[1];
+  },
+
+  setBids(state, bids) {
+    state.bids = bids;
   }
 };

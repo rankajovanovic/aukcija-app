@@ -11,7 +11,9 @@ export const store = new Vuex.Store({
   state: {
     token: JSON.parse(localStorage.getItem('token')),
     activeUser: {},
-    items: []
+    items: [],
+    numberOfItems: Number,
+    bids: [],
   },
   getters,
   actions,

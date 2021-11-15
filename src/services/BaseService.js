@@ -14,13 +14,13 @@ HTTP.interceptors.request.use(function(request) {
     return request;
 });
 
-HTTP.interceptors.response.use(async function (response) {
-    const token = JSON.parse(localStorage.getItem('token'));
+HTTP.interceptors.response.use(async function(response) {
+    const token = JSON.parse(localStorage.getItem("token"));
     if (token && response.status == 401) {
-        const { data } = await HTTP.post('/refresh-token');
-        localStorage.setItem('token', data.token);
+      const { data } = await HTTP.post("/refresh-token");
+      localStorage.setItem("token", data.token);
     }
     return response;
-})
+  });
 
 export default HTTP;

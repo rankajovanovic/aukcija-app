@@ -2,17 +2,20 @@ import http from './BaseService';
 
 class ItemService {
 
-    getAll(payload){
-        return http.get('items', {
+    async getAll(payload){
+      const response = await http.get('items', {
             headers: {
                 searchText: payload.searchText,
+                pagination: payload.pagination,
               },
             });
+      return response.data;
     }
 
    add(data) {
         http.post('items', data)
         .then(response => {
+          
             return response.data;
         })
         .catch(error => {

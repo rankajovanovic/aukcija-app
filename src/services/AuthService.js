@@ -32,6 +32,25 @@ class AuthService {
           return e;
         }
       }
+
+      async update(credentials) {
+        try {
+          const {data} = await http.put('/update', credentials);
+          return data;
+        } catch (e) {
+          return e;
+        }
+      }
+
+      async me() {
+        try {
+          const {data} = await http.get('/me');
+          return data;
+        } catch (e) {
+          return e;
+        }
+      
+      }
 }
 
 const authService = new AuthService();
